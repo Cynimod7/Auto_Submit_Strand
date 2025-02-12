@@ -17,6 +17,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 name = os.getlogin()
+bbuser = name + "@betenbough.com"
 Main = f"C:/Users/{name}/OneDrive - Betenbough Homes/Desktop/Main"
 
 def main():
@@ -130,14 +131,26 @@ def login_window():
 def get_strand_info():
     try:
         driver.switch_to.window(agreements)
+
+        s(2)
+        driver.find_element(By.ID, "i0116").send_keys(bbuser)
+        driver.find_element(By.ID, "idSIButton9").click()
+        driver.implicitly_wait(10)
+        driver.find_element(By.ID, "username").send_keys(bbuser + Keys.ENTER)
+        driver.implicitly_wait(10)
+        driver.find_element(By.ID, "password").send_keys(password + Keys.ENTER)
+        input("Press Enter")
+
+        '''
         # Login to BH Agreements
-        driver.find_element(By.ID, "ContentPlaceHolder1_txtEmail").send_keys(f"{name}@betenbough.com")
+        driver.find_element(By.ID, "ContentPlaceHolder1_txtEmail").send_keys(bbuser)
 
         s(.25)
         driver.find_element(By.ID, "ContentPlaceHolder1_txtPassword").send_keys(password)
 
         s(.2)
         driver.find_element(By.ID, "ContentPlaceHolder1_txtPassword").send_keys(Keys.ENTER)
+        '''
 
         # Search for the address
         w(5)
@@ -163,8 +176,6 @@ def get_strand_info():
         handing = handing.split()[1]
 
         handing = handing.strip("()")
-
-
 
         global upc
         upc = driver.find_element(By.ID, "ctl00_MainContentWithoutPadding_lblFloorPlanFamily").text
