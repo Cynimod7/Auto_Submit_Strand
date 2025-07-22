@@ -141,29 +141,18 @@ def get_strand_info():
         driver.find_element(By.ID, "password").send_keys(password + Keys.ENTER)
         input("Press Enter")
 
-        '''
-        # Login to BH Agreements
-        driver.find_element(By.ID, "ContentPlaceHolder1_txtEmail").send_keys(bbuser)
-
-        s(.25)
-        driver.find_element(By.ID, "ContentPlaceHolder1_txtPassword").send_keys(password)
-
-        s(.2)
-        driver.find_element(By.ID, "ContentPlaceHolder1_txtPassword").send_keys(Keys.ENTER)
-        '''
-
         # Search for the address
         w(5)
-        driver.find_element(By.ID, "ctl00_MainContent_txtAddress").send_keys(address_input)
-        s(.2)
-        # Hits the search button.
-        driver.find_element(By.ID, "ctl00_MainContent_txtAddress").send_keys(Keys.ENTER)
+        s(2.5)
+        driver.find_element(By.ID, "ctl00_MainContent_txtAddress").send_keys(addressinput)
+
+        s(.5)
+        driver.find_element(By.ID, "searchbutton").click()
 
         w(5)
         driver.find_element(By.PARTIAL_LINK_TEXT, "View").click()
 
         w(10)
-
         global address
         address = driver.find_element(By.ID, "ctl00_MainContentWithoutPadding_lblAddress").text
 
@@ -219,7 +208,7 @@ def get_strand_info():
     except Exception as e:
         print(f"This is what happened: {e}")
         sys.exit()
-        
+
 def get_bid_set():
     def find_files_with_keyword(directory, keyword):
         # List to store the matching filenames
@@ -251,115 +240,125 @@ def get_bid_set():
 
 
 def fill_strand():
+    try:
+        # Switch to Stand page.
+        s(1)
+        driver.switch_to.window(strand)
+        driver.maximize_window()
 
-    # Switch to Stand page.
-    s(1)
-    driver.switch_to.window(strand)
-    driver.maximize_window()
+        # Logs into Strand.
+        s(1)
+        driver.find_element(By.ID, "UserName").send_keys("permitting@betenbough.com")
 
-    # Logs into Strand.
-    s(1)
-    driver.find_element(By.ID, "UserName").send_keys("permitting@betenbough.com")
+        s(.2)
+        driver.find_element(By.ID, "Password").send_keys("PB1113")
 
-    s(.2)
-    driver.find_element(By.ID, "Password").send_keys("PB1113")
+        s(.2)
+        driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div[1]/div/div/div/div/form/div/div[2]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr[2]/td[2]/em/button").click()
 
-    s(.2)
-    driver.find_element(By.XPATH, "/html/body/div[1]/div/div[2]/div[1]/div/div/div/div/form/div/div[2]/table/tbody/tr/td[2]/table/tbody/tr/td[1]/table/tbody/tr/td/table/tbody/tr[2]/td[2]/em/button").click()
+        # 3002 Settler Ave
+        # Red House
+        s(1)
+        driver.find_element(By.XPATH, "/html/body/div[1]/dl/dt[4]/a").click()
 
-    # 3002 Settler Ave
-    # Red House
-    s(1)
-    driver.find_element(By.XPATH, "/html/body/div[1]/dl/dt[4]/a").click()
+        # Order
+        s(2)
+        driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[2]/div[1]/div/div/div/div/div/div[1]/div/table/tbody/tr/td[1]/table/tbody/tr/td[8]/table/tbody/tr[2]/td[2]/em/button").click()
 
-    # Order
-    s(2)
-    driver.find_element(By.XPATH, "/html/body/div[1]/div[3]/div[2]/div[1]/div/div/div/div/div/div[1]/div/table/tbody/tr/td[1]/table/tbody/tr/td[8]/table/tbody/tr[2]/td[2]/em/button").click()
-
-    # Type Standard to Order Type
-    s(1.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys("s")
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys(Keys.ENTER)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys(Keys.TAB)
-
-
-    # Type 'B' to enter BH - Amarillo
-    s(1.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys("B")
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys(Keys.ENTER)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys(Keys.TAB)
-
-    # Click the subdivision dropdown.
-    s(.5)
-
-    if "Homestead 1" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
-    elif "Homestead 2" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
-    elif "Homestead 4" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN * 2)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
-    elif "The Meadows 3" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("S")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
-    elif "The Meadows 4" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("S")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN * 2)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
-    elif "Heritage Hills 18" in subdivision:
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("H")
-        s(.25)
-        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        # Type Standard to Order Type
+        s(1.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys("s")
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys(Keys.ENTER)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[1]/div[1]/div/input[2]").send_keys(Keys.TAB)
 
 
-    s(2)
-    actions.key_down(Keys.SHIFT).send_keys(Keys.TAB).key_up(Keys.SHIFT).perform()
+        # Type 'B' to enter BH - Amarillo
+        s(1.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys("B")
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys(Keys.ENTER)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[2]/div[1]/div/input[2]").send_keys(Keys.TAB)
 
-    # Address
-    s(2.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[1]").send_keys(address)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[1]").send_keys(Keys.TAB)
+        # Click the subdivision dropdown.
+        s(.5)
 
-    # Lot
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[2]").send_keys(lot_num)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[2]").send_keys(Keys.TAB)
+        if "Homestead 3" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "Homestead 1" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "Homestead 2" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN + 1)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "Homestead 4" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("Ho")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN * 3)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "The Meadows 3" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("S")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "The Meadows 4" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("S")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ARROW_DOWN * 2)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
+        elif "Heritage Hills 18" in subdivision:
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys("H")
+            s(.25)
+            driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[3]/div[1]/div/div/div[1]/input[2]").send_keys(Keys.ENTER)
 
-    # Block
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[3]").send_keys(block_num)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[3]").send_keys(Keys.TAB)
 
-    # Plan
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[1]").send_keys(upc)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[1]").send_keys(Keys.TAB)
+        s(2)
+        actions.key_down(Keys.SHIFT).send_keys(Keys.TAB).key_up(Keys.SHIFT).perform()
 
-    # Elevation
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[2]").send_keys(elevation)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[2]").send_keys(Keys.TAB)
+        # Address
+        s(2.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[1]").send_keys(address)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[1]").send_keys(Keys.TAB)
 
-    # Swing
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(handing)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(Keys.ENTER)
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(Keys.TAB * 9)
+        # Lot
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[2]").send_keys(lot_num)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[2]").send_keys(Keys.TAB)
 
-    # Comments                                  3112 Swenson St
-    s(.5)
-    driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[17]/div[1]/textarea").send_keys("PT Foundation Design")
-    input("All Done.  Just upload your bid set and you're good to go!!! :)")
+        # Block
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[3]").send_keys(block_num)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[5]/div[1]/div/div/input[3]").send_keys(Keys.TAB)
+
+        # Plan
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[1]").send_keys(upc)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[1]").send_keys(Keys.TAB)
+
+        # Elevation
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[2]").send_keys(elevation)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/input[2]").send_keys(Keys.TAB)
+
+        # Swing
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(handing)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(Keys.ENTER)
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(Keys.TAB * 9)
+
+        # Comments                                  3112 Swenson St
+        s(.5)
+        driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[17]/div[1]/textarea").send_keys("PT Foundation Design")
+        input("All Done.  Just upload your bid set and you're good to go!!! :)")
+
+    except Exception as e:
+        print(f"This is what happened: {e}")
+    finally:
+        pass
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
