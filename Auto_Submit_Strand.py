@@ -148,10 +148,12 @@ def get_strand_info():
 
         s(.5)
         driver.find_element(By.ID, "searchbutton").click()
+        driver.implicitly_wait(10)
+        link = driver.find_element(By.PARTIAL_LINK_TEXT, "View")
+        driver.execute_script("arguments[0].removeAttribute('target')", link)
 
-        w(5)
-        driver.find_element(By.PARTIAL_LINK_TEXT, "View").click()
-
+        # Click the link — it will now open in the same tab
+        link.click()
         w(10)
         global address
         address = driver.find_element(By.ID, "ctl00_MainContentWithoutPadding_lblAddress").text
