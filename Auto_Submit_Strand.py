@@ -3,10 +3,10 @@ import shutil
 import fnmatch
 import sys
 import tkinter as tk
+import time
 from tkinter import messagebox
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import time
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -31,7 +31,7 @@ def main():
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         print(f"\nError on line: {exc_tb.tb_lineno}")
-        print(f"Error happened in getAgreementinfo(). This is the error - {e}")
+        print(f"Error happened in main(). This is the error - {e}")
         print("Currently trying to redo main().")
         input("Check out what happened.....")
         global termmain
@@ -132,19 +132,31 @@ def get_strand_info():
     try:
         driver.switch_to.window(agreements)
 
-        s(2)
+        # Types username, password, and logs you in.
+        w(10)
         driver.find_element(By.ID, "i0116").send_keys(bbuser)
         driver.find_element(By.ID, "idSIButton9").click()
-        driver.implicitly_wait(10)
+        w(10)
         driver.find_element(By.ID, "username").send_keys(bbuser + Keys.ENTER)
-        driver.implicitly_wait(10)
+        w(10)
         driver.find_element(By.ID, "password").send_keys(password + Keys.ENTER)
-        input("Press Enter")
 
+        # Throws an error if your Betenbough Homes password is incorrect.
+        try:
+            element = driver.find_element(By.XPATH, '//*[@id="ContentPlaceHolder1_ValidationSummary"]/ul/li')
+            displayed = element.is_displayed()
+            if displayed:
+                print('\nYour password is incorrect. Please enter the correct password and try again.\n')
+                s(0.5)
+                driver.get("https://homes.betenbough.com/Sales/Search.aspx")
+                get_strand_info()
+                return
+        except:
+            pass
         # Search for the address
         w(5)
         s(2.5)
-        driver.find_element(By.ID, "ctl00_MainContent_txtAddress").send_keys(addressinput)
+        driver.find_element(By.ID, "ctl00_MainContent_txtAddress").send_keys(address_input)
 
         s(.5)
         driver.find_element(By.ID, "searchbutton").click()
@@ -352,7 +364,7 @@ def fill_strand():
         s(.5)
         driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[6]/div[1]/div/div/div[5]/input[2]").send_keys(Keys.TAB * 9)
 
-        # Comments                                  3112 Swenson St
+        # Comments
         s(.5)
         driver.find_element(By.XPATH, "/html/body/div[14]/div[2]/div[1]/div/div/div/div/div/form/div[17]/div[1]/textarea").send_keys("PT Foundation Design")
         input("All Done.  Just upload your bid set and you're good to go!!! :)")
